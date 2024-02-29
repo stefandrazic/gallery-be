@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Gallery extends Model
 {
@@ -12,4 +14,9 @@ class Gallery extends Model
     protected $fillable = [
         'name', 'description', 'img_urls'
     ];
+
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -19,7 +19,12 @@ class GalleryResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'img_urls' => $this->img_urls,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'author' => [
+                'id' => $this->author->id,
+                'first_name' => $this->author->first_name,
+                'last' => $this->author->last_name,
+            ]
         ];
     }
 }

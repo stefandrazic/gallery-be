@@ -17,7 +17,10 @@ class GalleryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->sentence(3),
+            'description' => fake()->sentence(6),
+            'img_urls' => fake()->imageUrl(),
+            'author_id' => 1
         ];
     }
 }

@@ -6,16 +6,31 @@ use App\Models\Gallery;
 use App\Http\Requests\StoreGalleryRequest;
 use App\Http\Requests\UpdateGalleryRequest;
 use App\Http\Resources\GalleryResource;
+use Illuminate\Http\Request;
 
 class GalleryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    private $perPage = 10;
+    public function index(Request $request)
     {
-        $galleries = Gallery::all();
-        return GalleryResource::collection($galleries);
+        $page = $request->input('page') ? $request->input('page') : 1;
+        $perPage = $request->input('perPage') ? $request->input('perPage') : $this->perPage;
+        $skip = $page * $perPage - $perPage;
+
+        $galleries = Gallery::take($perPage)->skip($skip)->get();
+        // $galleries = Gallery::all();
+        $metaData = [
+            'metadata' => [
+                'total' => Gallery::count(),
+                'count' => $galleries->count(),
+                'perPage' => $perPage,
+            ]
+        ];
+
+        return GalleryResource::collection($galleries)->additional($metaData);
     }
 
     /**
