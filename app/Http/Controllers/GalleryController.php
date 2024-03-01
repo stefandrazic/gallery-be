@@ -46,10 +46,13 @@ class GalleryController extends Controller
      */
     public function store(StoreGalleryRequest $request)
     {
-        $request->validated();
-        $gallery = Gallery::create(
-            $request->only('name', 'description', 'img_urls')
-        );
+        $validatedData = $request->validated();
+
+        $galleryData = $request->only('name', 'description', 'img_urls');
+        $galleryData['author_id'] = 1;
+
+        $gallery = Gallery::create($galleryData);
+
         return new GalleryResource($gallery);
     }
 

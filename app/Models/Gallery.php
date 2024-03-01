@@ -12,7 +12,7 @@ class Gallery extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'img_urls'
+        'name', 'description', 'img_urls', 'author_id'
     ];
 
     public function author(): BelongsTo
