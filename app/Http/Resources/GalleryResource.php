@@ -23,7 +23,7 @@ class GalleryResource extends JsonResource
             'author' => [
                 'id' => $this->author->id,
                 'first_name' => $this->author->first_name,
-                'last' => $this->author->last_name,
+                'last_name' => $this->author->last_name,
             ]
         ];
     }

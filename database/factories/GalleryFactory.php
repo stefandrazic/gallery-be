@@ -19,7 +19,7 @@ class GalleryFactory extends Factory
         return [
             'name' => fake()->sentence(3),
             'description' => fake()->sentence(6),
-            'img_urls' => fake()->imageUrl(),
+            'img_urls' => "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg,https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg",
             'author_id' => 1
         ];
     }
