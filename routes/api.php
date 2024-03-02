@@ -20,10 +20,25 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::apiResource('/galleries', GalleryController::class);
+// Route::apiResource('/galleries', GalleryController::class)->middleware('auth:sanctum');
 // ->middleware('auth:sanctum');
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-// Route::post('/logout', [AuthController::class, 'logout']);
-Route::post('/logout', 'AuthController@logout')->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    // Auth routes
+    Route::post('/galleries', [GalleryController::class, 'store']);
+    Route::put('/galleries/{id}', [GalleryController::class, 'update']);
+    Route::delete('/galleries/{id}', [GalleryController::class, 'destroy']);
+});
+
+Route::group([], function () {
+    // Public routes
+    Route::get('/galleries', [GalleryController::class, 'index']);
+    Route::get('/galleries/{id}', [GalleryController::class, 'show']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+
+
+// Route::post('/logout', 'AuthController@logout')->middleware('auth:sanctum');

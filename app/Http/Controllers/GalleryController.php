@@ -20,7 +20,7 @@ class GalleryController extends Controller
         $perPage = $request->input('perPage') ? $request->input('perPage') : $this->perPage;
         $skip = $page * $perPage - $perPage;
 
-        $galleries = Gallery::take($perPage)->skip($skip)->get();
+        $galleries = Gallery::orderBy('created_at', 'desc')->take($perPage)->skip($skip)->get();
         // $galleries = Gallery::all();
         $metaData = [
             'metadata' => [
@@ -44,15 +44,39 @@ class GalleryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(StoreGalleryRequest $request)
+    // {
+    //     $validatedData = $request->validated();
+    //     if (!$request->user()) {
+    //         return response("You are not logged in!", 404);
+    //     }
+
+
+    //     $galleryData = $request->only('name', 'description', 'img_urls');
+    //     $galleryData['author_id'] = $request->user()->id;
+
+    //     $gallery = Gallery::create($galleryData);
+
+    //     return new GalleryResource($gallery);
+    // }
     public function store(StoreGalleryRequest $request)
     {
-        $validatedData = $request->validated();
+        // Check if the user is authenticated
+        if (!$request->user()) {
+            return response("You are not logged in!", 401);
+        }
 
+        // Extract validated data from the request
+        $request->validated();
+
+        // Create gallery data array
         $galleryData = $request->only('name', 'description', 'img_urls');
-        $galleryData['author_id'] = 1;
+        $galleryData['author_id'] = $request->user()->id;
 
+        // Create a new gallery instance
         $gallery = Gallery::create($galleryData);
 
+        // Return the newly created gallery as a resource
         return new GalleryResource($gallery);
     }
 
@@ -86,6 +110,11 @@ class GalleryController extends Controller
         if (!$gallery) {
             return response('Gallery not found', 404);
         }
+
+        if ($request->user()->id !== $gallery->author()->id) {
+            return response()->json(['error' => 'You have no rights to edit this post.']);
+        }
+
         $request->validated();
         $gallery->update($request->only('name', 'description', 'img_urls'));
         return new GalleryResource($gallery);
@@ -100,6 +129,10 @@ class GalleryController extends Controller
         if (!$gallery) {
             return response('Gallery not found', 404);
         }
+        if (auth()->user()->id !== $gallery->author()->id) {
+            return response('Unauthorised', 401);
+        }
+
         $gallery->delete();
         return response('Gallery deleted successfully.');
     }
