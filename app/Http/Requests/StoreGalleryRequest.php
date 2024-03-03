@@ -22,8 +22,8 @@ class StoreGalleryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:2|max:255',
-            'description' => 'max:1000',
+            'name' => 'required|min:2|max:255|string',
+            'description' => 'max:1000|string',
             "img_urls" => 'string'
         ];
     }

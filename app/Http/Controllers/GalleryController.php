@@ -20,7 +20,7 @@ class GalleryController extends Controller
         $perPage = $request->input('perPage') ? $request->input('perPage') : $this->perPage;
         $skip = $page * $perPage - $perPage;
 
-        $galleries = Gallery::orderBy('created_at', 'desc')->take($perPage)->skip($skip)->get();
+        $galleries = Gallery::orderBy('id', 'desc')->take($perPage)->skip($skip)->get();
         // $galleries = Gallery::all();
         $metaData = [
             'metadata' => [
@@ -111,7 +111,7 @@ class GalleryController extends Controller
             return response('Gallery not found', 404);
         }
 
-        if ($request->user()->id !== $gallery->author()->id) {
+        if ($request->user()->id !== $gallery->author->id) {
             return response()->json(['error' => 'You have no rights to edit this post.']);
         }
 
@@ -129,7 +129,7 @@ class GalleryController extends Controller
         if (!$gallery) {
             return response('Gallery not found', 404);
         }
-        if (auth()->user()->id !== $gallery->author()->id) {
+        if (auth()->user()->id !== $gallery->author->id) {
             return response('Unauthorised', 401);
         }
 
