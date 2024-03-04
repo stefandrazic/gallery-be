@@ -23,7 +23,7 @@ class UpdateGalleryRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2|max:255',
-            'description' => 'max:1000',
+            'description' => 'max:1000|string|nullable',
             "img_urls" => 'string'
         ];
     }

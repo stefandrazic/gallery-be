@@ -16,15 +16,38 @@ class GalleryController extends Controller
     private $perPage = 10;
     public function index(Request $request)
     {
-        $page = $request->input('page') ? $request->input('page') : 1;
+        $request->has('page') ?
+            $page = $request->input('page') :
+            $page = 1;
         $perPage = $request->input('perPage') ? $request->input('perPage') : $this->perPage;
         $skip = $page * $perPage - $perPage;
 
-        $galleries = Gallery::orderBy('id', 'desc')->take($perPage)->skip($skip)->get();
+        // $galleries = Gallery::orderBy('id', 'desc')->take($perPage)->skip($skip)->get();
         // $galleries = Gallery::all();
+
+        $query = Gallery::query();
+        if ($request->has('userId')) {
+            $userId = $request->input('userId');
+            $query->where('author_id', $userId); // Filter galleries by author_id
+        }
+
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%$searchTerm%")
+                    ->orWhere('description', 'like', "%$searchTerm%")
+                    ->orWhereHas('author', function ($q) use ($searchTerm) {
+                        $q->where('first_name', 'like', "%$searchTerm%")
+                            ->orWhere('last_name', 'like', "%$searchTerm%");
+                    });
+            });
+        }
+        $queryCount = $query->count();
+        $galleries = $query->orderBy('id', 'desc')->take($perPage)->skip($skip)->get();
+
         $metaData = [
             'metadata' => [
-                'total' => Gallery::count(),
+                'total' => $queryCount,
                 'count' => $galleries->count(),
                 'perPage' => $perPage,
             ]
