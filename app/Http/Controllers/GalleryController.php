@@ -6,6 +6,7 @@ use App\Models\Gallery;
 use App\Http\Requests\StoreGalleryRequest;
 use App\Http\Requests\UpdateGalleryRequest;
 use App\Http\Resources\GalleryResource;
+use App\Http\Resources\ShortGalleryResource;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
@@ -53,7 +54,7 @@ class GalleryController extends Controller
             ]
         ];
 
-        return GalleryResource::collection($galleries)->additional($metaData);
+        return ShortGalleryResource::collection($galleries)->additional($metaData);
     }
 
     /**

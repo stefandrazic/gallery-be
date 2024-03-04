@@ -5,23 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Gallery extends Model
+class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name', 'description', 'img_urls', 'author_id'
-    ];
+    protected $fillable = ['content'];
 
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function comments(): HasMany
+    public function gallery(): BelongsTo
     {
-        return $this->hasMany(Comment::class);
+        return $this->belongsTo(Gallery::class);
     }
 }
