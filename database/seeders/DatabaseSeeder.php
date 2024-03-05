@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(10)->create();
         usleep(500000);
         $this->call(GallerySeeder::class);
+        usleep(500000);
+        $this->call(CommentSeeder::class);
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

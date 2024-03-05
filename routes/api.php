@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/galleries/{id}', [GalleryController::class, 'update']);
     Route::delete('/galleries/{id}', [GalleryController::class, 'destroy']);
     Route::post('/comments', [CommentController::class, 'store']);
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
 });
 
 Route::group([], function () {

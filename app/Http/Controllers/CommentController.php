@@ -69,8 +69,16 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+        if (!$comment) {
+            return response('Movie not found', 404);
+        }
+        if (auth()->user()->id !== $comment->author->id) {
+            return response('Unauthorised', 401);
+        }
+        $comment->delete();
+        return response('Comment deleted successfully');
     }
 }
