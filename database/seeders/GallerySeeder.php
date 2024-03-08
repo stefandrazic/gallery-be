@@ -12,6 +12,6 @@ class GallerySeeder extends Seeder
      */
     public function run(): void
     {
-        Gallery::factory(600)->create();
+        Gallery::factory(52)->create();
     }
 }
