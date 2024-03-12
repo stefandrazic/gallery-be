@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/galleries/{id}', [GalleryController::class, 'destroy']);
     Route::post('/comments', [CommentController::class, 'store']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+    Route::post('/like', [LikeController::class, 'likeGallery']);
+    Route::post('/dislike', [LikeController::class, 'dislikeGallery']);
 });
 
 Route::group([], function () {

@@ -26,6 +26,8 @@ class GalleryResource extends JsonResource
                 'last_name' => $this->author->last_name,
             ],
             'comments' => CommentResource::collection($this->comments),
+            'like_count' => $this->likes()->where('liked', true)->count(),
+            'dislike_count' => $this->likes()->where('liked', false)->count(),
         ];
     }
 }
